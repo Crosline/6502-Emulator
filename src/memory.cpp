@@ -10,6 +10,7 @@ void Memory::Initialize() {
 Byte Memory::operator [] (uint32 addr) const {
 	return Data[addr];
 }
+
 Byte& Memory::operator [] (uint32 addr) {
 	return Data[addr];
 }
