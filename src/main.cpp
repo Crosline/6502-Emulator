@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cpu.h"
-#include "memory.h" // redundant
-#include "opcodes.h" // redundant
+#include "memory.h" // redundant - cpu.h
+#include "opcodes.h" // redundant - cpu.h
 
 int main() {
 	CPU cpu;

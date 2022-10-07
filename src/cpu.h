@@ -1,7 +1,7 @@
 #pragma once
-#include "cpu_constants.h"
 #include "memory.h"
 #include "opcodes.h"
+#include "cpu_constants.h" // redundant - opcodes.h
 
 // https://en.wikipedia.org/wiki/MOS_Technology_6502
 // https://web.archive.org/web/20210909190432/http://www.obelisk.me.uk/6502/
