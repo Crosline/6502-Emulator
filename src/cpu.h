@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+//#include <map>
 #include "memory.h"
 #include "opcodes.h"
 #include "cpu_constants.h" // redundant - opcodes.h
@@ -25,22 +27,70 @@ struct CPU {
 	Byte I : 1; // interrupt disable
 	Byte Z : 1; // zero
 	Byte C : 1; // carry
+	Byte U : 1; // unused
+
+	// RAM
+	Memory memory;
+	
+	uint32 cycles;
+
+	// Clock counter
+	uint32 CC;
+
+	CPU();
 
 	void Reset(Memory&);
-	void LoadAccumulator(Memory&, uint32);
+	void Interrupt();
+	void NonMaskedInterrupt();
+	void Execute();
 
-	void DecreaseCycle(uint32&);
+	Byte ReadByte(Word);
+	void WriteByte(Byte, uint32);
 
-	Byte FetchByte(Memory&, uint32&);
-	Byte ReadByte(Memory&, uint32&);
+	Word ReadWord(Word);
+	Word FetchWord(Word);
 
-	Word FetchWord(Memory&, uint32&);
-	Word ReadWord(Memory&, uint32&);
+	void WriteWord(Byte, uint32);
+	void WriteFullWord(Word, uint32);
 
-	void WriteWord(Memory&, Byte, uint32, uint32&);
+	Byte AddrOffset(Byte&, Byte);
 
-	Byte ReadAddr(Memory&, Byte, uint32&);
-	Byte AddrOffset(Byte&, Byte, uint32&);
+	// Opcodes
+	Byte ADC(), AND(), ASL(), BCC(),
+		BCS(), BEQ(), BIT(), BMI(),
+		BNE(), BPL(), BRK(), BVC(),
+		BVS(), CLC(), CLD(), CLI(),
+		CLV(), CMP(), CPX(), CPY(),
+		DEC(), DEX(), DEY(), EOR(),
+		INC(), INX(), INY(), JMP(),
+		JSR(), LDA(), LDX(), LDY(),
+		LSR(), NOP(), ORA(), PHA(),
+		PHP(), PLA(), PLP(), ROL(),
+		ROR(), RTI(), RTS(), SBC(),
+		SEC(), SED(), SEI(), STA(),
+		STX(), STY(), TAX(), TAY(),
+		TSX(), TXA(), TXS(), TYA();
 
-	void LDASetStatus();
+	// Addressing modes
+	Byte IMP(),	 IMM(),
+		ZP0(), ZPX(),
+		ZPY(), REL(),
+		ABS(), ABX(),
+		ABY(), IND(),
+		IZX(), IZY();
+
+	// Unofficial operations, works the same as NOP
+	Byte UNOP();
+
+	// opcodes
+	struct OP {
+		std::string name;
+		Byte(CPU::* operate)(void) = nullptr;
+		Byte(CPU::* addrmode)(void) = nullptr;
+		uint32 cycles = 0;
+	};
+
+	std::vector<OP> instr;
+
+	//std::map<uint16_t, std::string> Disassemble(Word, Word);
 };
