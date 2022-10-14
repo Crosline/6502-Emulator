@@ -89,7 +89,6 @@ CPU::CPU() {
 void CPU::Execute() {
 	while (cycles == 0 && I == 0) { // read new instruction
 		Byte opcode = ReadByte(PC);
-		PC++;
 
 		U = 1;
 		Clock(opcode);
@@ -104,7 +103,7 @@ void CPU::Clock(Byte opcode) {
 		Byte opCycle = (this->*instr[opcode].operate)();
 
 		cycles += (addrCycle & opCycle);
-		
+
 		CC++;
 }
 
@@ -357,25 +356,49 @@ Byte CPU::IMP() {
 	return 0x00;
 }
 Byte CPU::IMM() {
-	// PC++; // TODO - Crosline: I didnt get this one
+	PC++;
 	return 0x00;
 }
 Byte CPU::ZP0() {
+	PC++;
 	PC = ReadByte(PC);
+
+	PC++;
+	PC &= 0x00FF;
+	
 	return 0x00;
 }
 Byte CPU::ZPX() {
+	PC++;
 	PC = ReadByte(PC);
 	AddrOffset((Byte&)PC, X);
+
+	PC++;
+	PC &= 0x00FF;
+	
 	return 0x00;
 }
 Byte CPU::ZPY() {
+	PC++;
+	PC = ReadByte(PC);
+	AddrOffset((Byte&)PC, Y);
+
+	PC++;
+	PC &= 0x00FF;
+	
 	return 0x00;
 }
 Byte CPU::REL() {
+	PC = ReadByte();
+	PC++;
+
+	if (PC & 0x80)
+		PC |= 0xFF00;
+
 	return 0x00;
 }
 Byte CPU::ABS() {
+	PC++;
 	PC = FetchWord(PC);
 	return 0x00;
 }
