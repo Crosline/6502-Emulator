@@ -389,6 +389,7 @@ Byte CPU::ZPY() {
 	return 0x00;
 }
 Byte CPU::REL() {
+	PC++;
 	PC = ReadByte();
 	PC++;
 
@@ -403,6 +404,7 @@ Byte CPU::ABS() {
 	return 0x00;
 }
 Byte CPU::ABX() {
+	PC++
 	Byte lo = ReadByte(PC);
 	PC++;
 	Byte hi = ReadByte(PC);
@@ -416,6 +418,7 @@ Byte CPU::ABX() {
 		return 0x00;
 }
 Byte CPU::ABY() {
+	PC++;
 	Byte lo = ReadByte(PC);
 	PC++;
 	Byte hi = ReadByte(PC);
@@ -429,12 +432,27 @@ Byte CPU::ABY() {
 		return 0x00;
 }
 Byte CPU::IND() {
+	PC++;
+	Word ptr = FetchWord(PC);
+	
+	PC = (ReadByte(ptr + 1) << 8) | ReadByte(ptr + 0);
+	
 	return 0x00;
 }
 Byte CPU::IZX() {
+	PC++;
+	PC = ReadByte(PC);
+	PC++;
+
+	PC = ReadWord(PC + X);
 	return 0x00;
 }
 Byte CPU::IZY() {
+	PC++;
+	PC = ReadByte(PC);
+	PC++;
+
+	PC = ReadWord(PC + Y);
 	return 0x00;
 }
 
