@@ -104,8 +104,7 @@ void CPU::Clock(Byte opcode) {
 		Byte opCycle = (this->*instr[opcode].operate)();
 
 		cycles += (addrCycle & opCycle);
-
-
+		
 		CC++;
 }
 
