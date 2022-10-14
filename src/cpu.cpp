@@ -390,7 +390,7 @@ Byte CPU::ZPY() {
 }
 Byte CPU::REL() {
 	PC++;
-	PC = ReadByte();
+	PC = ReadByte(PC);
 	PC++;
 
 	if (PC & 0x80)
@@ -404,7 +404,7 @@ Byte CPU::ABS() {
 	return 0x00;
 }
 Byte CPU::ABX() {
-	PC++
+	PC++;
 	Byte lo = ReadByte(PC);
 	PC++;
 	Byte hi = ReadByte(PC);

@@ -43,7 +43,7 @@ struct CPU {
 	void Interrupt();
 	void NonMaskedInterrupt();
 	void Execute();
-	void Clock();
+	void Clock(Byte);
 
 	Byte ReadByte(Word);
 	void WriteByte(Byte, uint32);
