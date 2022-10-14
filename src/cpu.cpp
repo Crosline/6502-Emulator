@@ -16,6 +16,41 @@ void CPU::Reset(Memory& mem) {
 	mem.Initialize();
 }
 
+void CPU::Interrupt() {
+	if (I == 1) {
+		return;
+	}
+
+	WriteWord(PC, SP);
+	SP -= 2;
+
+	B = 0;
+	U = 1;
+	I = 1;
+
+	SP--;
+}
+
+void CPU::IRQ() {
+	Interrupt();
+
+	PC = 0xFFFE;
+
+	PC = ReadWord(PC);
+
+	cycles = 7;
+}
+
+void CPU::NMI() {
+	Interrupt();
+
+	PC = 0xFFFA;
+
+	PC = ReadWord(PC);
+
+	cycles = 8;
+}
+
 CPU::CPU() {
 	instr = {
 		/* TODO - Crosline: Find a way to get instr by
@@ -57,7 +92,12 @@ void CPU::Execute() {
 		PC++;
 
 		U = 1;
+		Clock(opcode);
+		U = 1;
+	}
+}
 
+void CPU::Clock(Byte opcode) {
 		cycles += this->instr[opcode].cycles;
 
 		Byte addrCycle = (this->*instr[opcode].addrmode)();
@@ -65,10 +105,8 @@ void CPU::Execute() {
 
 		cycles += (addrCycle & opCycle);
 
-		U = 1;
 
 		CC++;
-	}
 }
 
 Byte CPU::ReadByte(Word addr) {

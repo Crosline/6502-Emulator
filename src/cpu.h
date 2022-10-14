@@ -43,6 +43,7 @@ struct CPU {
 	void Interrupt();
 	void NonMaskedInterrupt();
 	void Execute();
+	void Clock();
 
 	Byte ReadByte(Word);
 	void WriteByte(Byte, uint32);
@@ -54,6 +55,8 @@ struct CPU {
 	void WriteFullWord(Word, uint32);
 
 	Byte AddrOffset(Byte&, Byte);
+
+	void IRQ(), NMI();
 
 	// Opcodes
 	Byte ADC(), AND(), ASL(), BCC(),
