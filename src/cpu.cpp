@@ -352,7 +352,7 @@ Byte CPU::TYA() {
 }
 
 // Addressing modes
-Byte CPU::IMP() {
+Byte CPU::IMP() { // TODO - Crosline: Fetched = A  by https://github.com/OneLoneCoder/olcNES/blob/master/Part%232%20-%20CPU/olc6502.cpp
 	return 0x00;
 }
 Byte CPU::IMM() {
