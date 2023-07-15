@@ -38,10 +38,11 @@ struct CPU {
 	uint32 CC;
 
 	CPU();
+	explicit CPU(Memory&);
+	void SetInstructions();
 
 	void Reset(Memory&);
 	void Interrupt();
-	void NonMaskedInterrupt();
 	void Execute();
 	void Clock(Byte);
 

@@ -52,6 +52,15 @@ void CPU::NMI() {
 }
 
 CPU::CPU() {
+	SetInstructions();
+}
+
+CPU::CPU(Memory& mem) {
+	SetInstructions();
+	Reset(mem);
+}
+
+void CPU::SetInstructions() {
 	instr = {
 		/* TODO - Crosline: Find a way to get instr by
 		{"ADC", &CPU::ADC, &CPU::ABS, 4}, {"ADC", &CPU::ADC, &CPU::ABX, 4},{"ADC", &CPU::ADC, &CPU::ABY, 4}, {"ADC", &CPU::ADC, &CPU::IMM, 2}, {"ADC", &CPU::ADC, &CPU::IZX, 6}, {"ADC", &CPU::ADC, &CPU::IZY, 5},
